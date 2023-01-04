@@ -26,8 +26,6 @@ def clean_txt_files(first, second):
         for line in firstfile:  # copy all the most recent data before any calls over to the oldest location
             secondfile.write(line)
         firstfile.truncate(0)  # clear all data in our original file to make room for new data
-
-
 # yes this means that if we delete file 1 itll create file 1 copy data from file 2 to 1 and back to 2, sue me, I refuse to fix it
 
 
