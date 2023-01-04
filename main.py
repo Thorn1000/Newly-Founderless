@@ -1,38 +1,13 @@
 import requests
 import json
-import os.path
 
 from bs4 import BeautifulSoup as BS
 
+version = 0.1
 
-def initilisation():
-    first_exists = os.path.exists('first.txt')  # check for file first.txt
-    if first_exists:
-        pass
-    else:
-        with open('first.txt', 'w') as creation:  # if it doesnt exist, make it
-            creation.write('')
-
-    second_exists = os.path.exists('second.txt')  # same for second.txt
-    if second_exists:
-        pass
-    else:
-        with open('second.txt', 'w') as genisis:
-            genisis.write('')
-
-    json_exists = os.path.exists('stored.json')  # same for our stored.json
-    if json_exists:
-        pass
-    else:
-        with open('stored.json', 'w') as establishment:
-            establishment.write('')
-
-    json_exists2 = os.path.exists('backup.json')  # finally for our backup.json
-    if json_exists2:
-        pass
-    else:
-        with open('backup.json', 'w') as progeneration:
-            progeneration.write('')
+headers = {
+    "User-Agent": f"Newly Founderless Regions/{version} (developer: https://github.com/Thorn1000/Newly-Founderless ; user:Thorn1000;)"
+}  # Im a good boy and set my useragent [v]
 
 
 def clean_txt_files(first, second):
@@ -90,9 +65,9 @@ def compare_txt_files(file1, file2, json_file, backup_json):
         if diff not in data:
             data[diff] = 0  # add new regions to the json data with a value of 0 updates while CTEd
 
-    for key in list(data.keys()):
+    for key in data.iterkeys():
         if key not in list1:  # if a region is in the json and not in the most recent call, delete it, ie founder back
-            data.pop(key)
+            data.pop(key)  # I dont think I have a good way to test this, dunno if it works
         else:
             data[key] += 1  # if the data is found, incriment it by 1. Dunno if i should start at 0 or -1
             if data[key] >= 15:  # if its been 1 week, delete the data so we only have this weeks CTEs
@@ -107,13 +82,9 @@ def compare_txt_files(file1, file2, json_file, backup_json):
         json.dump(sorted_data, f, indent=2)
 
 
-version = 0.1
-
-headers = {
-    "User-Agent": f"Newly Founderless Regions/{version} (developer: https://github.com/Thorn1000/Newly-Founderless ; user:Thorn1000;)"
-}  # Im a good boy and set my useragent [v]
-
-initilisation()  # make all the files if they are not there
-clean_txt_files('first.txt', 'second.txt')  # clean our little files
-api_work('first.txt')  # make the sole API request and do some cleaning
-compare_txt_files('first.txt', 'second.txt', 'stored.json', 'backup.json')  # heavy lifting with all the logic
+if __name__ != "__main__":
+    pass
+else:
+    clean_txt_files('first.txt', 'second.txt')  # clean our little files
+    api_work('first.txt')  # make the sole API request and do some cleaning
+    compare_txt_files('first.txt', 'second.txt', 'stored.json', 'backup.json')  # heavy lifting with all the logic
