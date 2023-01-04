@@ -26,6 +26,8 @@ def clean_txt_files(first, second):
         for line in firstfile:  # copy all the most recent data before any calls over to the oldest location
             secondfile.write(line)
         firstfile.truncate(0)  # clear all data in our original file to make room for new data
+
+
 # yes this means that if we delete file 1 itll create file 1 copy data from file 2 to 1 and back to 2, sue me, I refuse to fix it
 
 
@@ -42,7 +44,7 @@ def api_work(first):
         f.write(targets)  # take our now empty txt file and dump the cleaned API call into it
 
 
-def compare_txt_files(file1, file2, json_file, backup_json):
+def compare_txt_files(file1, file2, json_file):
     with open(file1, 'r') as f1:  # opens the newest data and dumps it to a list
         list1 = f1.read().splitlines()
     with open(file2, 'r') as f2:  # grabs the data from the run before this and makes a list
@@ -55,7 +57,7 @@ def compare_txt_files(file1, file2, json_file, backup_json):
             with open(json_file, 'r') as j1:
                 data = json.load(j1)  # if we have data, cool
         except json.decoder.JSONDecodeError:
-                data = {}  # If we dont make some new data
+            data = {}  # If we dont make some new data
 
     for diff in diffs:
         if diff not in data:
@@ -80,4 +82,4 @@ if __name__ != "__main__":
 else:
     clean_txt_files('first.txt', 'second.txt')  # clean our little files
     api_work('first.txt')  # make the sole API request and do some cleaning
-    compare_txt_files('first.txt', 'second.txt', 'stored.json', 'backup.json')  # heavy lifting with all the logic
+    compare_txt_files('first.txt', 'second.txt', 'stored.json')  # heavy lifting with all the logic
