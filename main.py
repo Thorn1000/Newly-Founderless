@@ -54,12 +54,8 @@ def compare_txt_files(file1, file2, json_file, backup_json):
         try:
             with open(json_file, 'r') as j1:
                 data = json.load(j1)  # if we have data, cool
-        except json.decoder.JSONDecodeError:  # if we dont, try the backup
-            try:
-                with open(backup_json, 'r') as j2:
-                    data = json.load(j2)  # if we haev backup data, cool
-            except json.decoder.JSONDecodeError:
-                data = {}  # if neither work, lmfao make data and be sad this line was reached
+        except json.decoder.JSONDecodeError:
+                data = {}  # If we dont make some new data
 
     for diff in diffs:
         if diff not in data:
@@ -77,9 +73,6 @@ def compare_txt_files(file1, file2, json_file, backup_json):
     # ^ this makes a new dictionary which is just the previous one sorted for recency then alphabeticaly
     with open(json_file, 'w') as f:
         json.dump(sorted_data, f, indent=2)  # overrwrites the json file with updated data, one per line
-
-    with open(backup_json, 'w') as f:  # write data to a hopefully redundant backup
-        json.dump(sorted_data, f, indent=2)
 
 
 if __name__ != "__main__":
